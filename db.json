@@ -1,0 +1,74 @@
+{
+  "users": [
+    {
+      "id": "USER55555",
+      "fName": "Gamble",
+      "lName": "Garcia",
+      "email": "gamblegarcia@kongene.com",
+      "pinCode": 651194,
+      "birthDate": "1998-11-12",
+      "isActive": false
+    },
+    {
+      "id": "USER55556",
+      "fName": "Bonner",
+      "lName": "Vega",
+      "email": "bonnervega@kongene.com",
+      "pinCode": 657077,
+      "birthDate": "10-Jul-2009",
+      "isActive": true
+    },
+    {
+      "id": "USER55557",
+      "fName": "Beach",
+      "lName": "Hensley",
+      "email": "beachhensley@kongene.com",
+      "pinCode": 627212,
+      "birthDate": "07-Nov-2002",
+      "isActive": true
+    },
+    {
+      "id": "USER66666",
+      "fName": "Dhoni",
+      "lName": "CSK",
+      "isActive": true
+    }
+  ],
+  "todos": [
+    {
+      "id": "ID1",
+      "userId": "USER55556",
+      "text": "Book ticket",
+      "done": false,
+      "targetDate": "23-May-2017"
+    },
+    {
+      "id": "ID2",
+      "userId": "USER55557",
+      "text": "Prepare lunch",
+      "done": false,
+      "targetDate": "24-May-2017"
+    },
+    {
+      "id": "ID3",
+      "userId": "USER55555",
+      "text": "Buy Gift",
+      "done": true,
+      "targetDate": "24-May-2017"
+    },
+    {
+      "id": "ID5",
+      "userId": "USER55555",
+      "text": "Read book",
+      "done": true,
+      "targetDate": "23-May-2017"
+    },
+    {
+      "id": "ID9",
+      "userId": "USER55557",
+      "text": "Meet Uncle",
+      "done": true,
+      "targetDate": "24-May-2017"
+    }
+  ]
+}

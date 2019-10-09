@@ -1,0 +1,274 @@
+######### Creating the index 'master' ######### 
+PUT http://localhost:9200/master
+
+
+#########  Creating the type 'user' with mapping ######### 
+PUT http://localhost:9200/master/user/_mapping
+{ 
+  "user":{
+    "properties":{
+      "id":{
+        "type":"string"
+      },
+      "fName":{
+        "type":"string"
+      },
+      "lName":{
+        "type":"string"
+      },
+      "email":{
+        "type":"string"
+      },
+      "pinCode":{
+        "type":"integer"
+      },
+      "birthDate":{
+        "type":"date",
+        "format":"dd-MMM-YYYY"
+      },
+      "isActive":{
+        "type":"boolean"
+      }
+    }
+  } 
+}
+
+######### Creating the type 'todos' with mapping ######### 
+PUT http://localhost:9200/master/todos/_mapping
+{    
+  "todos":{
+    "_parent":{
+      "type":"user"
+    },
+    "properties":{
+      "id":{
+        "type":"string"
+      },
+      "userid":{
+        "type":"string"
+      },
+      "text":{
+        "type":"string"
+      },
+      "done":{
+        "type":"boolean"
+      },
+      "targetDate":{
+        "type":"date",
+        "format":"dd-MMM-YYYY"
+      }
+    }
+  }
+}
+
+------------------------------------------------------------------------------
+
+######### Creating the type 'user' & 'todos' with mapping ######### 
+PUT http://localhost:9200/master
+{  
+  "mappings":{  
+    "user":{  
+      "properties":{  
+        "id":{  
+          "type":"string"
+        },
+        "fName":{  
+          "type":"string"
+        },
+        "lName":{  
+          "type":"string"
+        },
+        "email":{  
+          "type":"string"
+        },
+        "pinCode":{  
+          "type":"integer"
+        },
+        "birthDate":{  
+          "type":"date",
+          "format":"dd-MMM-YYYY"
+        },
+        "isActive":{  
+          "type":"boolean"
+        }
+      }
+    },
+    "todos":{  
+      "_parent":{  
+        "type":"user"
+      },
+      "properties":{  
+        "id":{  
+          "type":"string"
+        },
+        "userid":{  
+          "type":"string"
+        },
+        "text":{  
+          "type":"string"
+        },
+        "done":{  
+          "type":"boolean"
+        },
+        "targetDate":{  
+          "type":"date",
+          "format":"dd-MMM-YYYY"
+        }
+      }
+    }
+  }
+}
+
+
+
+######### verifying the index #########
+GET http://localhost:9200/master
+
+######### Indexing Parent user #########
+PUT http://localhost:9200/master/user/_bulk
+{"create": { "_index": "master","_type": "user","_id": "USER55555"}}
+{"id":"USER55555","fName":"Gamble","lName":"Garcia","email":"gamblegarcia@kongene.com","pinCode":651194,"birthDate":"13-Nov-1998","isActive":false}
+{"create": { "_index": "master","_type": "user","_id": "USER55556"}}
+{"id":"USER55556","fName":"Bonner","lName":"Vega","email":"bonnervega@kongene.com","pinCode":657077,"birthDate":"10-Jul-2009","isActive":true}
+{"create": { "_index": "master","_type": "user","_id": "USER55557"}}
+{"id":"USER55557","fName":"Beach","lName":"Hensley","email":"beachhensley@kongene.com","pinCode":627212,"birthDate":"07-Nov-2002","isActive":true}
+{"create": { "_index": "master","_type": "user","_id": "USER55558"}}
+{"id":"USER55558","fName":"Mai","lName":"Thompson","email":"maithompson@kongene.com","pinCode":694480,"birthDate":"30-May-1989","isActive":true}
+{"create": { "_index": "master","_type": "user","_id": "USER55559"}}
+{"id":"USER55559","fName":"Della","lName":"Gould","email":"dellagould@kongene.com","pinCode":657576,"birthDate":"21-May-1993","isActive":true}
+{"create": { "_index": "master","_type": "user","_id": "USER55560"}}
+{"id":"USER55560","fName":"Annmarie","lName":"Bullock","email":"annmariebullock@kongene.com","pinCode":627923,"birthDate":"30-May-1984","isActive":false}
+
+######### Indexing child todos #########
+PUT http://localhost:9200/master/todos/_bulk
+{"create": { "_index": "master","_type": "todos","_id": "ID1","parent": "USER55556"}}
+{"id":"ID1","userid":"USER55556","text":"Book ticket","done":false,"targetDate":"30-Apr-2017"}
+{"create": { "_index": "master","_type": "todos","_id": "ID2","parent": "USER55557"}}
+{"id":"ID2","userid":"USER55557","text":"Prepare lunch","done":false,"targetDate":"12-Apr-2017"}
+{"create": { "_index": "master","_type": "todos","_id": "ID3","parent": "USER55555"}}
+{"id":"ID3","userid":"USER55555","text":"Buy Gift","done":true,"targetDate":"08-Mar-2017"}
+{"create": { "_index": "master","_type": "todos","_id": "ID4","parent": "USER55558"}}
+{"id":"ID4","userid":"USER55558","text":"Cycling","done":false,"targetDate":"26-Feb-2017"}
+{"create": { "_index": "master","_type": "todos","_id": "ID5","parent": "USER55555"}}
+{"id":"ID5","userid":"USER55555","text":"Read book","done":true,"targetDate":"01-Mar-2017"}
+{"create": { "_index": "master","_type": "todos","_id": "ID6","parent": "USER55560"}}
+{"id":"ID6","userid":"USER55560","text":"Read book","done":false,"targetDate":"22-Apr-2017"}
+{"create": { "_index": "master","_type": "todos","_id": "ID7","parent": "USER55558"}}
+{"id":"ID7","userid":"USER55558","text":"Transfer Money","done":false,"targetDate":"04-Jan-2017"}
+{"create": { "_index": "master","_type": "todos","_id": "ID8","parent": "USER55559"}}
+{"id":"ID8","userid":"USER55559","text":"Buy Gift","done":false,"targetDate":"28-Apr-2017"}
+{"create": { "_index": "master","_type": "todos","_id": "ID9","parent": "USER55557"}}
+{"id":"ID9","userid":"USER55557","text":"Meet Uncle","done":true,"targetDate":"28-Jan-2017"}
+{"create": { "_index": "master","_type": "todos","_id": "ID10","parent": "USER55558"}}
+{"id":"ID10","userid":"USER55558","text":"Prepare dinner","done":false,"targetDate":"26-Feb-2017"}
+
+######### Checking Unqiue ID validation for user and todos#########
+PUT http://localhost:9200/master/user/_bulk - Unique ID creation check ([user][ID1]: version conflict, document already exists (current version [1]))
+{"create": { "_index": "master","_type": "user","_id": "ID1"}}
+{"id":"USER55555","fName":"Gamble","lName":"Garcia","email":"gamblegarcia@kongene.com","pinCode":651194,"birthDate":"13-Nov-1998","isActive":false}
+
+PUT http://localhost:9200/master/todos/_bulk - Unique ID creation reason [todos][ID1]: version conflict, document already exists (current version [2])
+{"create": { "_index": "master","_type": "todos","_id": "ID1","parent": "USER55556"}}
+{"id":"ID1","userid":"USER55556","text":"Book ticket","done":false,"targetDate":"30-Apr-2017"}
+
+
+
+get a specific todo item based on its id
+{  
+  "query": {
+	"match": {         
+		"id": "ID1"         
+	}
+  }
+}
+
+get userdetails  (for a given userid ) and related active todos
+POST http://localhost:9200/master/_search
+{	
+   "query": {
+	  "has_parent": {
+		  "type": "user",
+		  "query": {
+			   "match": {
+					"id": "USER55557"
+				 }
+		   },
+		   "inner_hits": {				   
+		   }		   
+	   }		
+	},
+	"post_filter": { 
+		"term": { "done": true }
+	  }
+}
+ 
+ With Source control:
+{
+	"_source":{  
+     "includes": [ "id","text","done"]
+   },
+   "query": {
+	  "has_parent": {
+		  "type": "user",
+		  "query": {
+			   "match": {
+					"id": "USER55557"
+				 }
+		   },
+		   "inner_hits": {	
+			"_source": {
+				"includes": [ "id","fName","lName","isActive"]
+			}
+		   }
+	   }
+	}
+} 
+ 
+
+get all active users and related todo items 
+POST http://localhost:9200/master/_search
+{	
+   "query": {
+	  "has_child": {
+		  "type": "todos",
+		  "query": {
+			   "match_all": {					
+				 }
+		   },
+		   "inner_hits": {				   
+		   }		   
+	   }		
+	},
+	"post_filter": { 
+		"term": { "isActive": false }
+	  }
+}
+
+
+for a specific user (for a given user id) get active todos which has targetDate as today or tommorow
+POST http://localhost:9200/master/_search
+{	
+   "query": {
+	  "has_child": {
+		"type": "todos",
+		"query": {
+		"bool" : {
+			"must": [
+				{ "match": { "userid": "USER55556"}}, 
+				{ "match": { "done": false }}  
+			 ],			
+			"must" : {
+				"range" : {
+				"targetDate" : {
+					"gte" : "now-20d",
+					"lt" :  "now+1d"
+				}
+				}   
+			}
+		}
+		},
+		"inner_hits": {				   
+		}
+		}
+	}
+}

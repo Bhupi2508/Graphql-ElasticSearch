@@ -1,0 +1,30 @@
+{
+  "name": "apollo-server-graphql",
+  "version": "1.0.0",
+  "description": "apollo server graphql app",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha server-test.js -w",
+    "json:server": "json-server --watch db.json"
+  },
+  "author": "chandrakumar",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^0.3.3",
+    "axios": "^0.16.1",
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.3",
+    "elasticsearch": "^13.0.1",
+    "express": "^4.15.3",
+    "graphql": "^0.7.0",
+    "graphql-tools": "^0.7.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.4.1",
+    "request": "^2.81.0"
+  }
+}

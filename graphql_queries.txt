@@ -1,0 +1,59 @@
+#### get userdetails  (for a given userid ) and related active todos
+query($id: String!){
+  getUser(id: $id) {
+    ...UserFragment,
+    todos{
+    ...todoFragment
+    }
+  }
+}
+
+fragment UserFragment on User{
+  id,
+  fName,
+  lName
+  isActive
+}
+
+fragment todoFragment on Todo{
+  id,
+  done,
+  text
+}
+
+{
+  "id": "USER55557"  
+}
+------------------------
+#### get a specific todo item based on its id
+{
+  getTodo(id:"ID1"){
+    id,
+    text,
+    done   
+  }
+}
+-----------------------
+#### get all active users and related todo items
+{
+  getActiveUsers(isActive: "true") {
+    id,
+    fName,
+    lName
+    todos{
+      id,
+      text,
+      done
+    }
+  }
+}
+--------------------------
+##### for a specific user (for a given user id ) get active todos which has targetDate as today or tommorow
+{
+  getTargetTodos(id: "USER55557") {
+    id
+    text
+    done
+  }
+}
+------------------------------

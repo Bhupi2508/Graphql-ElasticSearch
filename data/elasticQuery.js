@@ -1,60 +1,67 @@
+/**
+ * 
+ * @param {*} args 
+ * 
+ * ElasticSearch configuration
+ */
+
 // get the User Todos for the given User ID
 function getUserTodoQuery(args) {
-  return {
-      index: 'master',                                
-      body: {
-        query: {
-        has_parent: {
-            type: 'user',
+    return {
+        index: 'master',
+        body: {
             query: {
-                match: {
-                        id: args.id
+                has_parent: {
+                    type: 'user',
+                    query: {
+                        match: {
+                            id: args.id
+                        }
+                    },
+                    inner_hits: {
                     }
+                }
             },
-            inner_hits: {				   
-            }		   
-        }		
-        },
-        post_filter: { 
-            term: { done: true }
+            post_filter: {
+                term: { done: true }
+            }
         }
     }
-}
 };
 
 // get the specific Todo for the given ID
 function getSpecificTodoQuery(args) {
-  return {
-    index: 'master',
-    type: 'todos',
-    filterPath: 'hits.hits._source',
-    body: {                
+    return {
+        index: 'master',
+        type: 'todos',
+        filterPath: 'hits.hits._source',
+        body: {
             query: {
-            match: {         
-                id: args.id        
+                match: {
+                    id: args.id
+                }
             }
-            }                            
         }
     }
 };
 
 // get the active users
 function getActiveUsersQuery(args) {
-return {
-    index: 'master',                                
+    return {
+        index: 'master',
         body: {
             query: {
-            has_child: {
-                type: 'todos',
-                query: {
-                    match_all: {                                      
+                has_child: {
+                    type: 'todos',
+                    query: {
+                        match_all: {
                         }
-                },
-                inner_hits: {				   
-                }		   
-            }		
+                    },
+                    inner_hits: {
+                    }
+                }
             },
-            post_filter: { 
+            post_filter: {
                 term: { isActive: true }
             }
         }
@@ -64,77 +71,77 @@ return {
 // get the todos targetted for the given User ID
 function getTargetTodosQuery(args) {
     return {
-    index: 'master',                                
-    body: {
-        query: {
-        has_child: {
-            type: 'todos',
+        index: 'master',
+        body: {
             query: {
-            bool : {
-                must: [
-                    { match: { userid: args.id}}, 
-                    { match: { done: false }}  
-                ],			
-                should : {
-                    range : {
-                    targetDate : {
-                        gte : 'now-1d',
-                        lt :  'now+1d'
+                has_child: {
+                    type: 'todos',
+                    query: {
+                        bool: {
+                            must: [
+                                { match: { userid: args.id } },
+                                { match: { done: false } }
+                            ],
+                            should: {
+                                range: {
+                                    targetDate: {
+                                        gte: 'now-1d',
+                                        lt: 'now+1d'
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    inner_hits: {
                     }
-                    }   
                 }
-            }
-            },
-            inner_hits: {				   
-            }
             }
         }
     }
-}
 };
 
 
 // resolve the Active Todos
 function getActiveTodosForUser(args) {
-    return {               
+    return {
         index: 'master',
         type: 'todos',
         filterPath: 'hits.hits._source',
-        body: {                
-        query: {
-        match: {         
-            userid: args.id                                 
-        }
-        },
-        post_filter: { 
-            term: { done: false }
-        }                            
+        body: {
+            query: {
+                match: {
+                    userid: args.id
+                }
+            },
+            post_filter: {
+                term: { done: false }
+            }
         }
     }
 };
 
 // resolve the Todos for User
 function getTodosForUser(args) {
-    return {               
+    return {
         index: 'master',
         type: 'user',
         filterPath: 'hits.hits._source',
-        body: {                
+        body: {
             query: {
-                match: {         
-                    id: args.userid      
+                match: {
+                    id: args.userid
                 }
-            }                            
+            }
         }
     }
 };
 
 // export the query methods
 module.exports = {
-    getUserTodoQuery  ,
+    getUserTodoQuery,
     getSpecificTodoQuery,
     getActiveUsersQuery,
     getTargetTodosQuery,
     getActiveTodosForUser,
-    getTodosForUser   
+    getTodosForUser
 };
